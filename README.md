@@ -1,75 +1,41 @@
 # Monorepo Template
 
-A template to create a monorepo SST ❍ Ion project.
+A demo of @ts-rest/serverless with SST
 
 ## Get started
 
-1. Use this template to [create your own repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
-
-2. Clone the new repo.
+1. Clone the repo.
 
    ```bash
-   git clone MY_APP
-   cd MY_APP
+   git clone git@github.com:lukeggchapman/sst-ts-rest-serverless-demo.git
+   cd sst-ts-rest-serverless-demo
    ```
 
-3. Rename the files in the project to the name of your app. 
-
-   ```bash
-   npx replace-in-file /sst-rest-api/g MY_APP **/*.* --verbose
-   ```
-
-4. Deploy!
+2. Deploy!
 
    ```bash
    npm install
    npx sst deploy
    ```
 
-6. Optionally, enable [_git push to deploy_](https://ion.sst.dev/docs/console/#autodeploy).
+3. Call the API Gateway URL provided with `/test` EG: `https://xxxxxxxxxx.execute-api.ap-southeast-2.amazonaws.com/test`
 
-## Usage
+4. Observe the error in the functions tab of the SST terminal
 
-This template uses [npm Workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces). It has 3 packages to start with and you can add more it.
+## Parts
 
-1. `core/`
+1. `infra/api.ts`
 
-   This is for any shared code. It's defined as modules. For example, there's the `Example` module.
-
-   ```ts
-   export module Example {
-     export function hello() {
-       return "Hello, world!";
-     }
-   }
-   ```
-
-   That you can use across other packages using.
+   This is where the API Gateway route is defined.
 
    ```ts
-   import { Example } from "@aws-monorepo/core/example";
-
-   Example.hello();
+   // Create the API
+   export const api = new sst.aws.ApiGatewayV2("Api");
+   
+   api.route("GET /test", "packages/functions/src/test.handler");
    ```
 
-2. `functions/`
+2. `packages/functions/src/test.ts`
 
-   This is for your Lambda functions and it uses the `core` package as a local dependency.
+   This is where the handler is defined. It is a copy of one of the test routes defined in the [@ts-rest/serverless lambda test file](https://github.com/ts-rest/ts-rest/blob/main/libs/ts-rest/serverless/src/lib/handlers/ts-rest-lambda.spec.ts).
 
-3. `scripts/`
-
-    This is for any scripts that you can run on your SST app using the `sst shell` CLI and [`tsx`](https://www.npmjs.com/package/tsx). For example, you can run the example script using:
-
-   ```bash
-   npm run shell src/example.ts
-   ```
-
-### Infrastructure
-
-The `infra/` directory allows you to logically split the infrastructure of your app into separate files. This can be helpful as your app grows.
-
-In the template, we have an `api.ts`, and `storage.ts`. These export the created resources. And are imported in the `sst.config.ts`.
-
----
-
-Join the SST community over on [Discord](https://discord.gg/sst) and follow us on [Twitter](https://twitter.com/SST_dev).
