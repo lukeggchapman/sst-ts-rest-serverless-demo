@@ -1,9 +1,12 @@
 {
-  "name": "@monorepo-template/functions",
+  "name": "@sst-rest-api/functions",
   "version": "0.0.0",
   "dependencies": {
-    "@monorepo-template/core": "*",
-    "sst": "*"
+    "@sst-rest-api/core": "*",
+    "@ts-rest/core": "^3.50.0",
+    "@ts-rest/serverless": "^3.50.0",
+    "sst": "*",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.137"
